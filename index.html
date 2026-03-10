@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <link rel="icon" href="data:,🦅" />
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Silverhawk Translator</title>
+
+    <link rel="stylesheet" href="style.css" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>🦅 Silverhawk Translator</h1>
+      <p class="tagline">translate and read aloud your words free</p>
+
+      <div class="translator">
+        <!-- INPUT -->
+
+        <div class="box">
+          <div class="lang-select">
+            <img id="flagInput" src="https://flagcdn.com/us.svg" />
+
+            <select id="inputLang">
+              <option value="ar">Arabic</option>
+              <option value="nl">Dutch</option>
+              <option value="en" selected>English</option>
+              <option value="fil">Filipino</option>
+              <option value="fr">French</option>
+              <option value="de">German</option>
+              <option value="he">Hebrew</option>
+              <option value="hi">Hindi</option>
+              <option value="id">Indonesian</option>
+              <option value="it">Italian</option>
+              <option value="ja">Japanese</option>
+              <option value="ko">Korean</option>
+              <option value="es">Spanish</option>
+              <option value="th">Thai</option>
+              <option value="vi">Vietnamese</option>
+              <option value="zh">Chinese</option>
+            </select>
+          </div>
+
+          <button id="autoTextBtn" class="autoTextBtn">
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+            Input Auto Text
+          </button>
+
+          <div id="autoTextMenu" class="autoTextMenu">
+            <select id="templateSelect">
+              <option value="">Load Conversation Template</option>
+              <option value="hotel">Hotel Lobby Conversation</option>
+              <option value="airport">Airport Check-in Conversation</option>
+              <option value="restaurant">Restaurant Conversation</option>
+              <option value="shopping">Shopping Conversation</option>
+              <option value="story">AI Story Generator</option>
+              <option value="grammar">Fix Grammar</option>
+              <option value="simplify">Simplify Sentence</option>
+              <option value="bilingual">Bilingual Dialogue</option>
+            </select>
+
+            <textarea
+              id="promptInput"
+              rows="4"
+              placeholder="or type prompt e.g. hotel conversation guest and receptionist"
+            ></textarea>
+
+            <button id="generatePrompt">Generate</button>
+          </div>
+
+          <div
+            id="inputText"
+            class="outputBox"
+            contenteditable="true"
+            data-placeholder="Type or speak your text..."
+          ></div>
+
+          <div class="ttsProgress">
+            <div id="ttsTime">0:00 / 0:00</div>
+
+            <div class="ttsBar">
+              <div id="ttsFill"></div>
+            </div>
+          </div>
+
+          <div class="actions">
+            <button id="mic">
+              <i class="fa fa-microphone"></i>
+            </button>
+
+            <button id="speakInput">
+              <i class="fa fa-volume-up"></i>
+            </button>
+
+            <button id="copyInput">
+              <i class="fa fa-copy"></i>
+            </button>
+
+            <div class="charSpacer"></div>
+
+            <div id="charCount">Character: 0</div>
+          </div>
+        </div>
+
+        <!-- CENTER BUTTONS -->
+
+        <div class="centerButtons">
+          <button id="translateBtn" title="Translate">
+            <i class="fa-solid fa-language"></i>
+          </button>
+
+          <button id="reverseBtn" title="Swap Language">
+            <i class="fa-solid fa-right-left"></i>
+          </button>
+
+          <button id="themeBtn" title="Dark / Light">
+            <i class="fa-solid fa-circle-half-stroke"></i>
+          </button>
+        </div>
+        <!-- OUTPUT -->
+
+        <div class="box">
+          <div class="lang-select">
+            <img id="flagOutput" src="https://flagcdn.com/us.svg" />
+
+            <select id="outputLang">
+              <option value="ar">Arabic</option>
+              <option value="nl">Dutch</option>
+              <option value="en" selected>English</option>
+              <option value="fil">Filipino</option>
+              <option value="fr">French</option>
+              <option value="de">German</option>
+              <option value="he">Hebrew</option>
+              <option value="hi">Hindi</option>
+              <option value="id">Indonesian</option>
+              <option value="it">Italian</option>
+              <option value="ja">Japanese</option>
+              <option value="ko">Korean</option>
+              <option value="es">Spanish</option>
+              <option value="th">Thai</option>
+              <option value="vi">Vietnamese</option>
+              <option value="zh">Chinese</option>
+            </select>
+
+            <!-- QUICK FLAG SELECTOR -->
+
+            <div class="flag-bar">
+              <img
+                src="https://flagcdn.com/id.svg"
+                onclick="setLang('id')"
+                title="Indonesian"
+              />
+
+              <img
+                src="https://flagcdn.com/sa.svg"
+                onclick="setLang('ar')"
+                title="Arabic"
+              />
+
+              <img
+                src="https://flagcdn.com/kr.svg"
+                onclick="setLang('ko')"
+                title="Korean"
+              />
+
+              <img
+                src="https://flagcdn.com/fr.svg"
+                onclick="setLang('fr')"
+                title="French"
+              />
+
+              <img
+                src="https://flagcdn.com/cn.svg"
+                onclick="setLang('zh')"
+                title="Chinese"
+              />
+
+              <img
+                src="https://flagcdn.com/es.svg"
+                onclick="setLang('es')"
+                title="Spanish"
+              />
+
+              <img
+                src="https://flagcdn.com/in.svg"
+                onclick="setLang('hi')"
+                title="Hindi"
+              />
+            </div>
+          </div>
+
+          <div id="outputText" class="outputBox"></div>
+
+          <div class="outputActions">
+            <div class="actions">
+              <button id="speakOutput">
+                <i class="fa fa-volume-up"></i>
+              </button>
+
+              <button id="copyOutput">
+                <i class="fa fa-copy"></i>
+              </button>
+            </div>
+
+            <div class="share">
+              <button onclick="shareWA()">WA</button>
+              <button onclick="shareTG()">IG</button>
+              <button onclick="shareFB()">FB</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="supportRow">
+        <h3>Support this project</h3>
+
+        <div class="tips">
+          <a href="https://patreon.com/AmateursReleased" target="_blank">
+            Patreon
+          </a>
+
+          <a href="https://buymeacoffee.com/silverhawknetwork" target="_blank">
+            Buy Me a Coffee
+          </a>
+
+          <a href="https://ko-fi.com/teddymulyana" target="_blank"> Ko-fi </a>
+
+          <button onclick="copyGopay()">GoPay</button>
+          <button onclick="copyDana()">Dana</button>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      Powered by
+      <a href="https://silverhawk.web.id" target="_blank">
+        Silverhawk Network
+      </a>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
