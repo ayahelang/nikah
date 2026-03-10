@@ -26,23 +26,23 @@ let timer = null
 
 /* FLAG MAP */
 
-const flags = {
-    ar: "sa",
-    nl: "nl",
-    en: "us",
-    fil: "ph",
-    fr: "fr",
-    de: "de",
-    he: "il",
-    hi: "in",
-    id: "id",
-    it: "it",
-    ja: "jp",
-    ko: "kr",
-    es: "es",
-    th: "th",
-    vi: "vn",
-    zh: "cn"
+const ttsLang = {
+    ar: "ar-SA",
+    nl: "nl-NL",
+    en: "en-US",
+    fil: "fil-PH",
+    fr: "fr-FR",
+    de: "de-DE",
+    he: "he-IL",
+    hi: "hi-IN",
+    id: "id-ID",
+    it: "it-IT",
+    ja: "ja-JP",
+    ko: "ko-KR",
+    es: "es-ES",
+    th: "th-TH",
+    vi: "vi-VN",
+    zh: "zh-CN"
 }
 
 /* ============================= */
@@ -114,10 +114,10 @@ async function translate() {
         outputText.innerHTML = result
     } catch {
         outputText.innerHTML =
-            `⚠ Translation limit reached.<br><br>
-        You may try again tomorrow.<br><br>
-        Meanwhile the original text is copied here so you can still use the speech feature.<br><br>
-        ------------------------------<br>
+            `⚠ Translation limit reached.<br>
+        You may try again tomorrow.<br>
+        Meanwhile the original text is copied here so you can still use the speech feature.<br>
+        ::<br>
         ${text}`
     }
 }
@@ -189,7 +189,7 @@ function speak(text, lang, source) {
     /* START NEW */
     speechSynthesis.cancel()
     currentSpeech = new SpeechSynthesisUtterance(text)
-    currentSpeech.lang = lang
+    currentSpeech.lang = ttsLang[lang] || lang
     speakingBox = source
     speechState = "playing"
     btn.className = "fa fa-pause"
