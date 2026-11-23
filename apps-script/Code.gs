@@ -441,8 +441,40 @@ function getGuest(code) {
 }
 
 // ==================== HELPERS ====================
-function getSheet(name) {
+
+/**
+ * Ambil spreadsheet.
+ * Prioritas:
+ * 1. Script Property SPREADSHEET_ID
+ * 2. getActiveSpreadsheet() (jika script dibuka dari dalam Sheet)
+ * 3. null → biar setupDatabase() yang membuat baru
+ */
+function getSpreadsheet() {
+  const props = PropertiesService.getScriptProperties();
+  const id = props.getProperty('SPREADSHEET_ID');
+
+  if (id) {
+    try {
+      return SpreadsheetApp.openById(id);
+    } catch (e) {
+      throw new Error('SPREADSHEET_ID tidak valid atau tidak punya akses: ' + e.message);
+    }
+  }
+
   const ss = SpreadsheetApp.getActiveSpreadsheet();
+  if (ss) {
+    props.setProperty('SPREADSHEET_ID', ss.getId());
+    return ss;
+  }
+
+  return null;
+}
+
+function getSheet(name) {
+  const ss = getSpreadsheet();
+  if (!ss) {
+    throw new Error('Database belum dibuat. Jalankan fungsi setupDatabase() satu kali.');
+  }
   let sheet = ss.getSheetByName(name);
   if (!sheet) {
     sheet = ss.insertSheet(name);
@@ -451,19 +483,37 @@ function getSheet(name) {
 }
 
 /**
- * Jalankan sekali setelah create spreadsheet
+ * =====================================================
+ * FUNGSI UTAMA — jalankan INI sekali dari awal
+ * =====================================================
+ * Membuat Google Sheet baru secara otomatis (jika belum ada),
+ * membuat semua tab yang dibutuhkan, dan menyimpan ID-nya
+ * ke Script Properties.
+ *
+ * Setelah sukses, buka View → Logs untuk melihat URL spreadsheet.
  */
-function setupSheets() {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
+function setupDatabase() {
+  const props = PropertiesService.getScriptProperties();
+  let ss = getSpreadsheet();
+  let createdNew = false;
 
-  // Users
-  let sh = ss.getSheetByName(SHEET_USERS) || ss.insertSheet(SHEET_USERS);
+  if (!ss) {
+    // Buat spreadsheet baru otomatis
+    ss = SpreadsheetApp.create('Nikah SaaS Database');
+    props.setProperty('SPREADSHEET_ID', ss.getId());
+    createdNew = true;
+  }
+
+  // --- Users ---
+  let sh = ss.getSheetByName(SHEET_USERS);
+  if (!sh) sh = ss.insertSheet(SHEET_USERS);
   sh.clear();
   sh.appendRow(['username', 'password', 'package', 'status', 'created_at', 'notes']);
   sh.getRange(1, 1, 1, 6).setFontWeight('bold');
 
-  // Invitations
-  sh = ss.getSheetByName(SHEET_INVITATIONS) || ss.insertSheet(SHEET_INVITATIONS);
+  // --- Invitations ---
+  sh = ss.getSheetByName(SHEET_INVITATIONS);
+  if (!sh) sh = ss.insertSheet(SHEET_INVITATIONS);
   sh.clear();
   sh.appendRow([
     'username', 'groom', 'bride', 'wedding_date', 'wedding_time',
@@ -472,34 +522,65 @@ function setupSheets() {
   ]);
   sh.getRange(1, 1, 1, 16).setFontWeight('bold');
 
-  // RSVPs
-  sh = ss.getSheetByName(SHEET_RSVPS) || ss.insertSheet(SHEET_RSVPS);
+  // --- RSVPs ---
+  sh = ss.getSheetByName(SHEET_RSVPS);
+  if (!sh) sh = ss.insertSheet(SHEET_RSVPS);
   sh.clear();
   sh.appendRow(['username', 'guest_name', 'attendance', 'message', 'phone', 'created_at']);
   sh.getRange(1, 1, 1, 6).setFontWeight('bold');
 
-  // Guests (link khusus)
-  sh = ss.getSheetByName(SHEET_GUESTS) || ss.insertSheet(SHEET_GUESTS);
+  // --- Guests (link khusus) ---
+  sh = ss.getSheetByName(SHEET_GUESTS);
+  if (!sh) sh = ss.insertSheet(SHEET_GUESTS);
   sh.clear();
   sh.appendRow(['code', 'username', 'guest_name', 'created_at']);
   sh.getRange(1, 1, 1, 4).setFontWeight('bold');
 
-  // Hapus Sheet1 default jika ada
+  // Hapus Sheet1 default jika masih ada
   const defaultSheet = ss.getSheetByName('Sheet1');
   if (defaultSheet && ss.getSheets().length > 1) {
     ss.deleteSheet(defaultSheet);
   }
 
-  Logger.log('Setup selesai! Jangan lupa set ADMIN_PASSWORD di Script Properties.');
-  return 'OK - Sheets siap';
+  const url = ss.getUrl();
+  const id = ss.getId();
+
+  Logger.log('========================================');
+  Logger.log(createdNew ? 'Spreadsheet BARU berhasil dibuat!' : 'Spreadsheet yang sudah ada dipakai ulang.');
+  Logger.log('ID  : ' + id);
+  Logger.log('URL : ' + url);
+  Logger.log('========================================');
+  Logger.log('Langkah berikutnya:');
+  Logger.log('1. Set ADMIN_PASSWORD (jalankan setAdminPassword setelah ganti password di dalam fungsi)');
+  Logger.log('2. Deploy → New deployment → Web app → Anyone');
+  Logger.log('3. Copy URL Web App ke js/config.js di frontend');
+  Logger.log('========================================');
+
+  return {
+    success: true,
+    createdNew: createdNew,
+    spreadsheetId: id,
+    spreadsheetUrl: url,
+    message: 'Database siap. Cek log (View → Logs) untuk URL spreadsheet.'
+  };
+}
+
+/** Alias supaya nama lama tetap jalan */
+function setupSheets() {
+  return setupDatabase();
 }
 
 /**
- * Set password admin (jalankan sekali dari editor)
- * Atau set manual: Project Settings > Script Properties
+ * Set password admin.
+ * 1. Ganti nilai password di bawah
+ * 2. Jalankan fungsi ini sekali
+ * 3. Boleh diubah lagi lewat Project Settings → Script Properties
  */
 function setAdminPassword() {
-  // GANTI password di sini lalu jalankan sekali, lalu hapus / comment
-  PropertiesService.getScriptProperties().setProperty('ADMIN_PASSWORD', 'ganti-dengan-password-kuat');
-  Logger.log('Admin password diset');
+  const password = 'ganti-dengan-password-kuat'; // <-- GANTI INI dulu
+  if (password === 'ganti-dengan-password-kuat') {
+    throw new Error('Ganti dulu nilai password di dalam fungsi setAdminPassword()');
+  }
+  PropertiesService.getScriptProperties().setProperty('ADMIN_PASSWORD', password);
+  Logger.log('ADMIN_PASSWORD berhasil diset.');
 }
