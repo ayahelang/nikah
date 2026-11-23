@@ -4,7 +4,7 @@
  */
 const CONFIG = {
   // Contoh: https://script.google.com/macros/s/AKfycb.../exec
-  API_URL: 'https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec',
+  API_URL: 'https://script.google.com/macros/s/AKfycbx-MKcofLJYvVjeP7lzZaJpeFCf9QW9TA2HXRrb5IhPgR_L3IP6QDI2fe5yuKocKJCS/exec',
 
   // Domain utama
   BASE_URL: 'https://nikah.silverhawk.web.id',
