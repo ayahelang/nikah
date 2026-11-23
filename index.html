@@ -3,146 +3,275 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Nikah — Undangan Digital Pernikahan</title>
-  <meta name="description" content="Buat undangan digital pernikahan elegan, bisa dicustom, sekali bayar tanpa masa aktif.">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <title>Nikah — Undangan Digital Pernikahan Elegan</title>
+  <meta name="description" content="Buat undangan digital pernikahan elegan, bisa dicustom. Sekali bayar, masa aktif 30 hari. 13 template, dapur undangan, RSVP, dan nama tamu personal.">
+  <meta name="keywords" content="undangan digital, undangan pernikahan, undangan online, wedding invitation, nikah">
+  <meta name="author" content="Silverhawk Network">
+  <meta name="theme-color" content="#8b5a2b">
+  <link rel="canonical" href="https://nikah.silverhawk.web.id/">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/favicon.svg">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://nikah.silverhawk.web.id/">
+  <meta property="og:title" content="Nikah — Undangan Digital Pernikahan Elegan">
+  <meta property="og:description" content="Sekali bayar, masa aktif 30 hari. Pilih template, edit di dapur undangan, sebar ke tamu dengan nama personal.">
+  <meta property="og:image" content="https://nikah.silverhawk.web.id/images/og-image.jpg">
+  <meta property="og:locale" content="id_ID">
+  <meta property="og:site_name" content="Nikah">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Nikah — Undangan Digital Pernikahan">
+  <meta name="twitter:description" content="Sekali bayar, masa aktif 30 hari. 13 template elegan, bisa dicustom.">
+  <meta name="twitter:image" content="https://nikah.silverhawk.web.id/images/og-image.jpg">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Great+Vibes&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --primary: #8b5a2b;
-      --primary-dark: #6b4423;
-      --accent: #d4a574;
-      --bg: #faf8f5;
-      --text: #2c2c2c;
-      --muted: #6b6b6b;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
-    h1, h2, h3 { font-family: 'Playfair Display', serif; }
-    .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
-    header { background: #fff; border-bottom: 1px solid #eee; padding: 16px 0; position: sticky; top: 0; z-index: 100; }
-    .nav { display: flex; justify-content: space-between; align-items: center; }
-    .logo { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; color: var(--primary); text-decoration: none; }
-    .nav-links a { margin-left: 24px; color: var(--text); text-decoration: none; font-weight: 500; }
-    .nav-links a:hover { color: var(--primary); }
-    .btn { display: inline-block; padding: 12px 28px; border-radius: 8px; font-weight: 600; text-decoration: none; cursor: pointer; border: none; font-size: 1rem; transition: all .2s; }
-    .btn-primary { background: var(--primary); color: #fff; }
-    .btn-primary:hover { background: var(--primary-dark); }
-    .btn-outline { background: transparent; border: 2px solid var(--primary); color: var(--primary); }
-    .hero { padding: 80px 0 60px; text-align: center; }
-    .hero h1 { font-size: 2.8rem; margin-bottom: 16px; color: var(--primary-dark); }
-    .hero p { font-size: 1.2rem; color: var(--muted); max-width: 600px; margin: 0 auto 32px; }
-    .packages { padding: 60px 0; }
-    .packages h2 { text-align: center; margin-bottom: 40px; font-size: 2rem; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; }
-    .card { background: #fff; border-radius: 16px; padding: 32px 24px; box-shadow: 0 4px 20px rgba(0,0,0,.06); border: 1px solid #f0e9e0; text-align: center; }
-    .card.featured { border-color: var(--accent); transform: scale(1.03); box-shadow: 0 8px 30px rgba(139,90,43,.15); }
-    .card h3 { font-size: 1.4rem; margin-bottom: 8px; }
-    .price { font-size: 2rem; font-weight: 700; color: var(--primary); margin: 12px 0; }
-    .price small { font-size: 0.9rem; font-weight: 400; color: var(--muted); }
-    .card ul { list-style: none; text-align: left; margin: 20px 0; }
-    .card ul li { padding: 6px 0; font-size: 0.95rem; }
-    .card ul li::before { content: "✓ "; color: var(--primary); font-weight: bold; }
-    .features { padding: 60px 0; background: #fff; }
-    .features h2 { text-align: center; margin-bottom: 40px; }
-    .feat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 28px; }
-    .feat { text-align: center; }
-    .feat-icon { font-size: 2rem; margin-bottom: 12px; }
-    footer { background: var(--primary-dark); color: #fff; padding: 40px 0; text-align: center; margin-top: 60px; }
-    footer a { color: var(--accent); }
-    @media (max-width: 600px) { .hero h1 { font-size: 2rem; } .nav-links { display: none; } }
+    :root{--primary:#8b5a2b;--primary-dark:#6b4423;--accent:#d4a574;--bg:#faf8f5;--text:#2c2c2c;--muted:#6b6b6b}
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:Inter,system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden}
+    h1,h2,h3{font-family:'Playfair Display',serif}
+    #intro{position:fixed;inset:0;z-index:1000;background:#1a1210;overflow-y:auto;-webkit-overflow-scrolling:touch;transition:opacity .8s ease,visibility .8s}
+    #intro.done{opacity:0;visibility:hidden;pointer-events:none}
+    .intro-scroll{min-height:220vh}
+    .intro-hero{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;color:#fff;padding:40px 20px;background:linear-gradient(160deg,#2c1810 0%,#4a2c1a 40%,#6b4423 100%);position:relative}
+    .intro-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 40%,rgba(0,0,0,.35) 100%)}
+    .intro-inner{position:relative;z-index:1;max-width:480px}
+    .intro-label{font-size:.85rem;letter-spacing:4px;text-transform:uppercase;opacity:.75;margin-bottom:12px}
+    .intro-names{font-family:'Great Vibes',cursive;font-size:clamp(2.5rem,8vw,3.8rem);font-weight:400;margin:8px 0}
+    .intro-amp{opacity:.7;font-size:1.2rem}
+    .intro-date{letter-spacing:2px;margin-top:16px;font-size:.95rem;opacity:.9}
+    .intro-hint{position:absolute;bottom:28px;left:0;right:0;text-align:center;color:rgba(255,255,255,.7);font-size:.8rem;animation:pulse 2s ease infinite}
+    @keyframes pulse{0%,100%{opacity:.5}50%{opacity:1}}
+    .intro-section{padding:70px 24px;max-width:640px;margin:0 auto;text-align:center;color:#f5ebe0}
+    .intro-section h2{font-size:1.6rem;margin-bottom:12px;color:var(--accent)}
+    .intro-section p{opacity:.85;font-size:.95rem}
+    .intro-couple{display:flex;justify-content:center;gap:32px;flex-wrap:wrap;margin-top:28px}
+    .intro-person h3{font-size:1.3rem;margin-bottom:4px}
+    .intro-person span{font-size:.8rem;opacity:.7}
+    .intro-divider{width:48px;height:2px;background:var(--accent);margin:0 auto 20px;opacity:.6}
+    .intro-cta-area{padding:60px 24px 100px;text-align:center;background:linear-gradient(to bottom,transparent,#0d0806)}
+    .intro-cta-area p{color:rgba(255,255,255,.7);margin-bottom:20px;font-size:.95rem}
+    .btn-enter{display:inline-block;padding:14px 36px;border:2px solid var(--accent);color:var(--accent);text-decoration:none;border-radius:40px;font-weight:600;letter-spacing:1px;transition:all .25s;cursor:pointer;background:transparent;font-size:.95rem}
+    .btn-enter:hover{background:var(--accent);color:#1a1210}
+    .skip-intro{position:fixed;top:16px;right:16px;z-index:1001;background:rgba(0,0,0,.4);color:#fff;border:1px solid rgba(255,255,255,.3);padding:8px 14px;border-radius:20px;font-size:.8rem;cursor:pointer;backdrop-filter:blur(6px)}
+    .skip-intro:hover{background:rgba(0,0,0,.6)}
+    #main{display:none}
+    #main.show{display:block;animation:fadeUp .7s ease}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+    .container{max-width:1100px;margin:0 auto;padding:0 20px}
+    header{background:rgba(255,255,255,.92);backdrop-filter:blur(10px);border-bottom:1px solid #eee;padding:14px 0;position:sticky;top:0;z-index:100}
+    .nav{display:flex;justify-content:space-between;align-items:center}
+    .logo{font-family:'Playfair Display',serif;font-size:1.45rem;font-weight:700;color:var(--primary);text-decoration:none}
+    .nav-links{display:flex;align-items:center;gap:8px}
+    .nav-links a{margin-left:12px;color:var(--text);text-decoration:none;font-weight:500;font-size:.95rem}
+    .nav-links a:hover{color:var(--primary)}
+    .btn{display:inline-block;padding:12px 26px;border-radius:10px;font-weight:600;text-decoration:none;cursor:pointer;border:none;font-size:.95rem;transition:all .2s}
+    .btn-primary{background:var(--primary);color:#fff}
+    .btn-primary:hover{background:var(--primary-dark);transform:translateY(-1px)}
+    .btn-outline{background:transparent;border:2px solid var(--primary);color:var(--primary)}
+    .btn-outline:hover{background:var(--primary);color:#fff}
+    .hero{padding:72px 0 56px;text-align:center}
+    .hero h1{font-size:clamp(2rem,5vw,2.85rem);margin-bottom:16px;color:var(--primary-dark);line-height:1.25}
+    .hero p{font-size:1.1rem;color:var(--muted);max-width:560px;margin:0 auto 28px}
+    .hero-actions{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+    .packages,.templates{padding:56px 0}
+    .packages h2,.features h2,.templates h2{text-align:center;margin-bottom:36px;font-size:1.85rem}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:22px}
+    .card{background:#fff;border-radius:16px;padding:28px 22px;box-shadow:0 4px 20px rgba(0,0,0,.05);border:1px solid #f0e9e0;text-align:center;transition:transform .2s,box-shadow .2s}
+    .card:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(0,0,0,.08)}
+    .card.featured{border-color:var(--accent);box-shadow:0 8px 28px rgba(139,90,43,.12)}
+    .card h3{font-size:1.3rem;margin-bottom:6px}
+    .price{font-size:1.85rem;font-weight:700;color:var(--primary);margin:10px 0}
+    .price small{font-size:.85rem;font-weight:400;color:var(--muted)}
+    .card ul{list-style:none;text-align:left;margin:16px 0}
+    .card ul li{padding:5px 0;font-size:.92rem}
+    .card ul li::before{content:"✓ ";color:var(--primary);font-weight:bold}
+    .features{padding:56px 0;background:#fff}
+    .feat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:24px}
+    .feat{text-align:center;padding:12px}
+    .feat-icon{font-size:1.8rem;margin-bottom:10px}
+    .feat h3{font-size:1.05rem;margin-bottom:6px}
+    .feat p{font-size:.88rem;color:var(--muted)}
+    .theme-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:14px}
+    .theme-card{border-radius:12px;padding:20px 12px;text-align:center;border:1px solid #eee;background:#fff;transition:transform .2s}
+    .theme-card:hover{transform:scale(1.03)}
+    .theme-swatch{width:100%;height:48px;border-radius:8px;margin-bottom:10px}
+    .theme-card strong{font-size:.85rem;display:block}
+    .theme-card span{font-size:.75rem;color:var(--muted)}
+    footer{background:var(--primary-dark);color:#fff;padding:36px 0;text-align:center;margin-top:40px}
+    footer a{color:var(--accent);text-decoration:none}
+    @media(max-width:640px){.nav-links a:not(.btn){display:none}.hero{padding:48px 0 40px}.intro-names{font-size:2.4rem}}
   </style>
 </head>
 <body>
-  <header>
-    <div class="container nav">
-      <a href="/" class="logo">Nikah.</a>
-      <div class="nav-links">
-        <a href="#paket">Paket</a>
-        <a href="#fitur">Fitur</a>
-        <a href="/login.html">Login Pelanggan</a>
-        <a href="/admin/">Admin</a>
+  <div id="intro">
+    <button type="button" class="skip-intro" id="skipIntro">Lewati →</button>
+    <div class="intro-scroll" id="introScroll">
+      <div class="intro-hero">
+        <div class="intro-inner">
+          <p class="intro-label">The Wedding Of</p>
+          <h1 class="intro-names">Joefrey <span class="intro-amp">&amp;</span> Sheila</h1>
+          <p class="intro-date">28 November · New York</p>
+        </div>
+        <p class="intro-hint">↓ Gulir untuk melihat undangan</p>
       </div>
-    </div>
-  </header>
-
-  <section class="hero">
-    <div class="container">
-      <h1>Undangan Digital<br>Elegan &amp; Bisa Dicustom</h1>
-      <p>Sekali bayar, tanpa masa aktif. Pilih template, edit di dapur undangan, sebar ke tamu dengan nama personal.</p>
-      <a href="#paket" class="btn btn-primary">Lihat Paket Harga</a>
-      <a href="/login.html" class="btn btn-outline" style="margin-left:12px;">Sudah punya akun? Login</a>
-    </div>
-  </section>
-
-  <section class="packages" id="paket">
-    <div class="container">
-      <h2>Pilih Paket Sesuai Kebutuhan</h2>
-      <div class="grid">
-        <div class="card">
-          <h3>Basic</h3>
-          <div class="price">Rp 49.000 <small>sekali bayar</small></div>
-          <ul>
-            <li>Template elegan</li>
-            <li>RSVP + Ucapan</li>
-            <li>Google Maps</li>
-            <li>Countdown</li>
-            <li>Nama tamu personal</li>
-            <li>Tanpa masa aktif</li>
-          </ul>
-          <p style="font-size:0.9rem;color:var(--muted);">Hubungi admin untuk order</p>
-        </div>
-        <div class="card featured">
-          <h3>Standard</h3>
-          <div class="price">Rp 79.000 <small>sekali bayar</small></div>
-          <ul>
-            <li>Semua fitur Basic</li>
-            <li>Musik background</li>
-            <li>Gallery foto (10)</li>
-            <li>Rekening titip hadiah</li>
-            <li>Love Story</li>
-            <li>Panel Dapur lengkap</li>
-          </ul>
-          <p style="font-size:0.9rem;color:var(--muted);">Paling banyak dipilih</p>
-        </div>
-        <div class="card">
-          <h3>Premium</h3>
-          <div class="price">Rp 119.000 <small>sekali bayar</small></div>
-          <ul>
-            <li>Semua fitur Standard</li>
-            <li>Custom warna & font</li>
-            <li>Gallery lebih banyak</li>
-            <li>Link live streaming</li>
-            <li>Generate link khusus tamu</li>
-            <li>Prioritas support</li>
-          </ul>
-          <p style="font-size:0.9rem;color:var(--muted);">Fitur paling lengkap</p>
+      <div class="intro-section">
+        <h2>Assalamu'alaikum</h2>
+        <div class="intro-divider"></div>
+        <p>Dengan memohon rahmat Allah SWT, kami mengundang Anda merayakan hari bahagia kami.</p>
+        <div class="intro-couple">
+          <div class="intro-person"><h3>Joefrey</h3><span>Mempelai Pria</span></div>
+          <div class="intro-person"><h3>Sheila</h3><span>Mempelai Wanita</span></div>
         </div>
       </div>
-    </div>
-  </section>
-
-  <section class="features" id="fitur">
-    <div class="container">
-      <h2>Fitur yang Siap Dipakai</h2>
-      <div class="feat-grid">
-        <div class="feat"><div class="feat-icon">🎨</div><h3>Template & Custom</h3><p>Pilih tema, ubah warna & konten sesuai selera</p></div>
-        <div class="feat"><div class="feat-icon">👤</div><h3>Nama Tamu</h3><p>Setiap link bisa menyambut tamu dengan nama</p></div>
-        <div class="feat"><div class="feat-icon">📝</div><h3>RSVP & Ucapan</h3><p>Tamu konfirmasi hadir + kirim doa/ucapan</p></div>
-        <div class="feat"><div class="feat-icon">📍</div><h3>Maps & Countdown</h3><p>Lokasi jelas + hitung mundur ke hari-H</p></div>
-        <div class="feat"><div class="feat-icon">🎵</div><h3>Musik & Gallery</h3><p>Lagu favorit + foto prewedding</p></div>
-        <div class="feat"><div class="feat-icon">💰</div><h3>Titip Hadiah</h3><p>Rekening / e-wallet ditampilkan di undangan</p></div>
-        <div class="feat"><div class="feat-icon">🛠️</div><h3>Dapur Undangan</h3><p>Edit sendiri kapan saja lewat panel pelanggan</p></div>
-        <div class="feat"><div class="feat-icon">🔗</div><h3>Link Khusus</h3><p>Generate link personal untuk setiap tamu</p></div>
+      <div class="intro-section">
+        <h2>Detail Acara</h2>
+        <div class="intro-divider"></div>
+        <p><strong>Resepsi</strong><br>Senin, 28 November<br>Gedung Serbaguna · 16.00 – 21.00</p>
+      </div>
+      <div class="intro-section">
+        <h2>Our Story</h2>
+        <div class="intro-divider"></div>
+        <p>Dari pertemuan pertama hingga janji seumur hidup — setiap momen kami abadikan dalam undangan digital yang elegan dan personal.</p>
+      </div>
+      <div class="intro-cta-area">
+        <p>Ini hanya contoh template klasik.<br>Buat undangan Anda sendiri — modern, custom, siap diseebar.</p>
+        <button type="button" class="btn-enter" id="enterMain">Masuk ke Nikah →</button>
       </div>
     </div>
-  </section>
+  </div>
 
-  <footer>
-    <div class="container">
-      <p><strong>Nikah</strong> by Silverhawk Network</p>
-      <p style="margin-top:8px;opacity:0.8;">Domain: nikah.silverhawk.web.id</p>
-      <p style="margin-top:16px;"><a href="/login.html">Login Pelanggan</a> · <a href="/admin/">Admin</a></p>
-    </div>
-  </footer>
+  <div id="main">
+    <header>
+      <div class="container nav">
+        <a href="/" class="logo">Nikah.</a>
+        <div class="nav-links">
+          <a href="#paket">Paket</a>
+          <a href="#template">Template</a>
+          <a href="#fitur">Fitur</a>
+          <a href="/login.html">Login</a>
+          <a href="/login.html" class="btn btn-primary" style="padding:8px 16px;font-size:.85rem;margin-left:8px">Dapur</a>
+        </div>
+      </div>
+    </header>
+    <section class="hero">
+      <div class="container">
+        <h1>Undangan Digital<br>Elegan &amp; Bisa Dicustom</h1>
+        <p>Sekali bayar, masa aktif 30 hari. Pilih template, edit di dapur undangan, sebar ke tamu dengan nama personal.</p>
+        <div class="hero-actions">
+          <a href="#paket" class="btn btn-primary">Lihat Paket Harga</a>
+          <a href="/login.html" class="btn btn-outline">Sudah punya akun? Login</a>
+        </div>
+      </div>
+    </section>
+    <section class="packages" id="paket">
+      <div class="container">
+        <h2>Pilih Paket Sesuai Kebutuhan</h2>
+        <div class="grid">
+          <div class="card">
+            <h3>Basic</h3>
+            <div class="price">Rp 49.000 <small>/ 30 hari</small></div>
+            <ul>
+              <li>1 template pilihan</li>
+              <li>RSVP + Ucapan</li>
+              <li>Google Maps</li>
+              <li>Countdown</li>
+              <li>Nama tamu personal</li>
+            </ul>
+          </div>
+          <div class="card featured">
+            <h3>Standard</h3>
+            <div class="price">Rp 79.000 <small>/ 30 hari</small></div>
+            <ul>
+              <li>Semua fitur Basic</li>
+              <li>13 template tersedia</li>
+              <li>Musik + Gallery</li>
+              <li>Rekening titip hadiah</li>
+              <li>Love Story</li>
+              <li>Panel Dapur lengkap</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Premium</h3>
+            <div class="price">Rp 119.000 <small>/ 30 hari</small></div>
+            <ul>
+              <li>Semua fitur Standard</li>
+              <li>Custom warna tema</li>
+              <li>Live streaming link</li>
+              <li>Generate link khusus tamu</li>
+              <li>Prioritas support</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="templates" id="template">
+      <div class="container">
+        <h2>13 Template Siap Pilih</h2>
+        <div class="theme-grid" id="themeGrid"></div>
+      </div>
+    </section>
+    <section class="features" id="fitur">
+      <div class="container">
+        <h2>Fitur Lengkap</h2>
+        <div class="feat-grid">
+          <div class="feat"><div class="feat-icon">🎨</div><h3>13 Template</h3><p>Classic hingga Ocean Breeze</p></div>
+          <div class="feat"><div class="feat-icon">👤</div><h3>Nama Tamu</h3><p>Sambut setiap tamu dengan nama</p></div>
+          <div class="feat"><div class="feat-icon">📝</div><h3>RSVP &amp; Ucapan</h3><p>Konfirmasi hadir + doa</p></div>
+          <div class="feat"><div class="feat-icon">📍</div><h3>Maps &amp; Countdown</h3><p>Lokasi jelas + hitung mundur</p></div>
+          <div class="feat"><div class="feat-icon">🎵</div><h3>Musik &amp; Gallery</h3><p>Lagu &amp; foto prewedding</p></div>
+          <div class="feat"><div class="feat-icon">💰</div><h3>Titip Hadiah</h3><p>Rekening &amp; e-wallet</p></div>
+          <div class="feat"><div class="feat-icon">🛠️</div><h3>Dapur Undangan</h3><p>Edit kapan saja</p></div>
+          <div class="feat"><div class="feat-icon">🔗</div><h3>Link Personal</h3><p>Generate per tamu</p></div>
+        </div>
+      </div>
+    </section>
+    <footer>
+      <div class="container">
+        <p><strong>Nikah</strong> by Silverhawk Network</p>
+        <p style="margin-top:6px;opacity:.8;font-size:.9rem">nikah.silverhawk.web.id</p>
+        <p style="margin-top:14px"><a href="/login.html">Login Pelanggan</a> · <a href="/admin/">Admin</a></p>
+      </div>
+    </footer>
+  </div>
+  <script src="/js/themes.js"></script>
+  <script>
+    (function(){
+      var grid=document.getElementById('themeGrid');
+      if(grid&&window.THEMES){
+        grid.innerHTML=THEMES.map(function(t){
+          return '<div class="theme-card"><div class="theme-swatch" style="background:linear-gradient(135deg,'+t.colors.primary+','+t.colors.accent+')"></div><strong>'+t.name+'</strong><span>'+t.desc+'</span></div>';
+        }).join('');
+      }
+    })();
+    (function(){
+      var intro=document.getElementById('intro');
+      var main=document.getElementById('main');
+      var scrollEl=document.getElementById('introScroll');
+      var finished=false;
+      if(sessionStorage.getItem('nikah_intro_seen')==='1'){finishIntro(false);return;}
+      function finishIntro(animate){
+        if(finished)return;
+        finished=true;
+        sessionStorage.setItem('nikah_intro_seen','1');
+        if(animate===false){intro.classList.add('done');main.classList.add('show');document.body.style.overflow='';return;}
+        intro.classList.add('done');
+        setTimeout(function(){main.classList.add('show');document.body.style.overflow='';window.scrollTo(0,0);},750);
+      }
+      document.getElementById('skipIntro').addEventListener('click',function(){finishIntro(true);});
+      document.getElementById('enterMain').addEventListener('click',function(){finishIntro(true);});
+      var auto=true;
+      var speed=0.55;
+      function step(){
+        if(!auto||finished)return;
+        var max=scrollEl.scrollHeight-intro.clientHeight;
+        if(intro.scrollTop<max-2){intro.scrollTop+=speed;requestAnimationFrame(step);}
+        else{setTimeout(function(){finishIntro(true);},1200);}
+      }
+      intro.addEventListener('wheel',function(){auto=false;},{passive:true});
+      intro.addEventListener('touchstart',function(){auto=false;},{passive:true});
+      setTimeout(function(){if(!finished)requestAnimationFrame(step);},1800);
+    })();
+  </script>
 </body>
 </html>

@@ -1,0 +1,18 @@
+{
+  "name": "Nikah — Undangan Digital",
+  "short_name": "Nikah",
+  "description": "Undangan digital pernikahan elegan, bisa dicustom, masa aktif 30 hari.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#faf8f5",
+  "theme_color": "#8b5a2b",
+  "lang": "id",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
