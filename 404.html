@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Memuat Undangan...</title>
+  <style>
+    body { font-family: system-ui, sans-serif; display: flex; min-height: 100vh; align-items: center; justify-content: center; background: #faf8f5; margin: 0; color: #333; }
+    .loader { text-align: center; }
+    .spinner { width: 40px; height: 40px; border: 3px solid #eee; border-top-color: #8b5a2b; border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 16px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+  <div class="loader">
+    <div class="spinner"></div>
+    <p id="status">Memuat undangan...</p>
+  </div>
+
+  <script>
+    /**
+     * Router sederhana untuk GitHub Pages
+     * Path yang didukung:
+     *   /{username}          → halaman undangan
+     *   /{username}/dapur    → dapur (jika belum di-handle folder)
+     *   /s/{code}            → link khusus tamu (opsional nanti)
+     */
+    (function () {
+      const path = location.pathname.replace(/\/+$/, '') || '/';
+      const parts = path.split('/').filter(Boolean);
+
+      // Abaikan file yang benar-benar ada
+      if (parts.length === 0 || path === '/index.html') {
+        location.replace('/');
+        return;
+      }
+
+      // /admin sudah ada folder
+      if (parts[0] === 'admin') {
+        location.replace('/admin/');
+        return;
+      }
+
+      // /login.html, /dapur.html langsung
+      if (parts[0] === 'login.html' || parts[0] === 'dapur.html') {
+        return;
+      }
+
+      // /{username}/dapur
+      if (parts.length >= 2 && parts[1] === 'dapur') {
+        // Redirect ke dapur.html dengan query agar JS tahu username
+        // Atau load dapur.html via fetch lalu inject (lebih kompleks)
+        // Paling sederhana: redirect ke /dapur.html?u=username
+        // Tapi user minta path /{username}/dapur → kita load dapur content via JS
+        document.getElementById('status').textContent = 'Membuka Dapur...';
+        // Karena dapur.html butuh path, kita set session & redirect
+        // Solusi praktis: buka dapur.html dan biarkan JS baca dari session + path
+        // Untuk sekarang: window.location.replace('/dapur.html'); 
+        // Tapi path hilang. Lebih baik embed logic.
+        // Alternatif terbaik untuk GitHub Pages: gunakan dapur.html dan biarkan user akses via /dapur.html setelah login (session sudah tahu username).
+        // Untuk path /{username}/dapur kita bisa:
+        location.replace('/dapur.html');
+        return;
+      }
+
+      // /{username} → undangan
+      if (parts.length === 1) {
+        const username = parts[0].toLowerCase();
+        // Load undangan.html? u=username (atau embed)
+        location.replace('/undangan.html?u=' + encodeURIComponent(username) + location.search);
+        return;
+      }
+
+      // fallback
+      document.getElementById('status').textContent = 'Halaman tidak ditemukan';
+      setTimeout(() => location.replace('/'), 2000);
+    })();
+  </script>
+</body>
+</html>

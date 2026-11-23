@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Undangan Pernikahan</title>
+  <meta name="description" content="Undangan digital pernikahan">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Great+Vibes&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #8b5a2b;
+      --accent: #d4a574;
+      --bg: #faf8f5;
+      --text: #2c2c2c;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+    h1, h2, h3 { font-family: 'Playfair Display', serif; }
+    .script { font-family: 'Great Vibes', cursive; }
+
+    /* Cover */
+    .cover {
+      min-height: 100vh;
+      background: linear-gradient(rgba(0,0,0,.45), rgba(0,0,0,.55)), url('') center/cover no-repeat;
+      display: flex; align-items: center; justify-content: center; text-align: center; color: #fff;
+      position: relative;
+    }
+    .cover-inner { padding: 40px 20px; max-width: 520px; }
+    .cover .to { font-size: 1rem; opacity: 0.9; margin-bottom: 12px; }
+    .cover .to strong { font-size: 1.3rem; display: block; margin-top: 4px; }
+    .cover h1 { font-family: 'Great Vibes', cursive; font-size: 3.2rem; margin: 16px 0; font-weight: 400; }
+    .cover .amp { font-size: 1.5rem; opacity: 0.8; }
+    .cover .date { font-size: 1.1rem; letter-spacing: 2px; margin-top: 12px; }
+    .btn-open {
+      display: inline-block; margin-top: 28px; padding: 12px 36px;
+      border: 2px solid #fff; color: #fff; text-decoration: none; border-radius: 30px;
+      font-weight: 500; transition: all .25s; cursor: pointer; background: transparent;
+    }
+    .btn-open:hover { background: #fff; color: var(--primary); }
+
+    /* Content sections */
+    section { padding: 60px 20px; max-width: 720px; margin: 0 auto; text-align: center; }
+    section h2 { font-size: 1.8rem; color: var(--primary); margin-bottom: 12px; }
+    .divider { width: 60px; height: 2px; background: var(--accent); margin: 0 auto 24px; }
+
+    .couple { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; margin-top: 24px; }
+    .person h3 { font-size: 1.5rem; margin-bottom: 4px; }
+
+    .countdown { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; margin: 24px 0; }
+    .cd-item { background: #fff; padding: 16px 20px; border-radius: 12px; min-width: 70px; box-shadow: 0 4px 15px rgba(0,0,0,.06); }
+    .cd-item span { display: block; font-size: 1.8rem; font-weight: 700; color: var(--primary); }
+    .cd-item small { font-size: 0.75rem; color: #888; text-transform: uppercase; }
+
+    .event-box { background: #fff; border-radius: 16px; padding: 28px; margin: 16px 0; box-shadow: 0 4px 20px rgba(0,0,0,.05); text-align: left; }
+    .event-box h3 { color: var(--primary); margin-bottom: 8px; }
+    .maps-btn { display: inline-block; margin-top: 12px; padding: 8px 20px; background: var(--primary); color: #fff; text-decoration: none; border-radius: 6px; font-size: 0.9rem; }
+
+    .story-item { text-align: left; padding: 20px 0; border-bottom: 1px solid #eee; }
+    .story-item:last-child { border-bottom: none; }
+    .story-item .date { color: var(--accent); font-size: 0.9rem; font-weight: 600; }
+
+    .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; margin-top: 20px; }
+    .gallery img { width: 100%; height: 140px; object-fit: cover; border-radius: 8px; }
+
+    .rekening-item { background: #fff; padding: 16px; border-radius: 10px; margin: 8px 0; text-align: left; box-shadow: 0 2px 10px rgba(0,0,0,.04); }
+    .rekening-item strong { color: var(--primary); }
+
+    /* RSVP form */
+    .form-group { margin-bottom: 14px; text-align: left; }
+    .form-group label { display: block; font-size: 0.9rem; margin-bottom: 4px; font-weight: 500; }
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%; padding: 10px 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem;
+    }
+    .form-group textarea { min-height: 80px; }
+    .btn-submit { width: 100%; padding: 14px; background: var(--primary); color: #fff; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; margin-top: 8px; }
+    .btn-submit:hover { background: #6b4423; }
+    .rsvp-msg { margin-top: 12px; padding: 10px; border-radius: 6px; display: none; }
+    .rsvp-msg.ok { background: #d4edda; color: #155724; display: block; }
+    .rsvp-msg.err { background: #f8d7da; color: #721c24; display: block; }
+
+    /* Music control */
+    .music-btn {
+      position: fixed; bottom: 20px; right: 20px; width: 48px; height: 48px;
+      border-radius: 50%; background: var(--primary); color: #fff; border: none;
+      font-size: 1.2rem; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,.2); z-index: 50;
+    }
+
+    .hidden { display: none !important; }
+    #mainContent { display: none; }
+    #mainContent.show { display: block; }
+
+    footer { text-align: center; padding: 30px; font-size: 0.85rem; color: #999; }
+  </style>
+</head>
+<body>
+  <!-- COVER / OPENING -->
+  <div class="cover" id="cover">
+    <div class="cover-inner">
+      <div class="to" id="guestGreeting">
+        Kepada Yth.<br>
+        <strong id="guestName">Tamu Undangan</strong>
+      </div>
+      <p style="opacity:0.85;margin:16px 0 8px;">The Wedding Of</p>
+      <h1 id="coupleNames">Mempelai</h1>
+      <p class="date" id="coverDate"></p>
+      <button class="btn-open" id="btnOpen">Buka Undangan</button>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div id="mainContent">
+    <section>
+      <h2>Assalamu'alaikum</h2>
+      <div class="divider"></div>
+      <p>Dengan memohon rahmat dan ridho Allah SWT, kami mengundang Bapak/Ibu/Saudara/i untuk menghadiri resepsi pernikahan kami.</p>
+      <div class="couple" style="margin-top:32px;">
+        <div class="person">
+          <h3 id="groomName">—</h3>
+          <p style="font-size:0.9rem;color:#666;">Mempelai Pria</p>
+        </div>
+        <div style="font-size:2rem;color:var(--accent);align-self:center;">&</div>
+        <div class="person">
+          <h3 id="brideName">—</h3>
+          <p style="font-size:0.9rem;color:#666;">Mempelai Wanita</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Menghitung Hari</h2>
+      <div class="divider"></div>
+      <div class="countdown" id="countdown">
+        <div class="cd-item"><span id="cd-d">0</span><small>Hari</small></div>
+        <div class="cd-item"><span id="cd-h">0</span><small>Jam</small></div>
+        <div class="cd-item"><span id="cd-m">0</span><small>Menit</small></div>
+        <div class="cd-item"><span id="cd-s">0</span><small>Detik</small></div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Detail Acara</h2>
+      <div class="divider"></div>
+      <div class="event-box">
+        <h3>Resepsi Pernikahan</h3>
+        <p id="eventDate">—</p>
+        <p id="eventTime">—</p>
+        <p id="eventLocation">—</p>
+        <a id="mapsLink" href="#" target="_blank" class="maps-btn" style="display:none;">Buka di Google Maps</a>
+      </div>
+      <div id="streamingBox" class="event-box hidden">
+        <h3>Live Streaming</h3>
+        <a id="streamingLink" href="#" target="_blank" class="maps-btn">Tonton Live</a>
+      </div>
+    </section>
+
+    <section id="storySection" class="hidden">
+      <h2>Our Story</h2>
+      <div class="divider"></div>
+      <div id="storyList"></div>
+    </section>
+
+    <section id="gallerySection" class="hidden">
+      <h2>Gallery</h2>
+      <div class="divider"></div>
+      <div class="gallery" id="galleryList"></div>
+    </section>
+
+    <section id="rekeningSection" class="hidden">
+      <h2>Amplop Digital</h2>
+      <div class="divider"></div>
+      <p style="margin-bottom:16px;font-size:0.95rem;">Doa restu Anda merupakan karunia yang sangat berarti. Jika memberi adalah ungkapan tanda kasih, Anda dapat memberikan tanda kasih melalui:</p>
+      <div id="rekeningList"></div>
+    </section>
+
+    <section>
+      <h2>Konfirmasi Kehadiran</h2>
+      <div class="divider"></div>
+      <form id="rsvpForm" style="max-width:400px;margin:0 auto;text-align:left;">
+        <div class="form-group">
+          <label>Nama</label>
+          <input type="text" id="rsvpName" required>
+        </div>
+        <div class="form-group">
+          <label>Kehadiran</label>
+          <select id="rsvpAttend">
+            <option value="hadir">Insyaallah Hadir</option>
+            <option value="tidak">Maaf, Berhalangan</option>
+            <option value="ragu">Masih Ragu</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Ucapan / Doa</label>
+          <textarea id="rsvpMsg" placeholder="Tulis ucapan dan doa Anda..."></textarea>
+        </div>
+        <button type="submit" class="btn-submit">Kirim Konfirmasi</button>
+        <div class="rsvp-msg" id="rsvpResult"></div>
+      </form>
+    </section>
+
+    <footer>
+      <p>Undangan digital oleh <strong>Nikah</strong> · silverhawk.web.id</p>
+    </footer>
+  </div>
+
+  <button class="music-btn hidden" id="musicBtn" title="Musik">♪</button>
+  <audio id="bgMusic" loop></audio>
+
+  <script src="/js/config.js"></script>
+  <script src="/js/api.js"></script>
+  <script>
+    // Ambil username dari query ?u= atau path
+    const params = new URLSearchParams(location.search);
+    let username = params.get('u') || '';
+    if (!username) {
+      // fallback path
+      const parts = location.pathname.split('/').filter(Boolean);
+      if (parts.length) username = parts[0];
+    }
+    username = username.toLowerCase();
+
+    // Nama tamu personal
+    const guestName = params.get('kpd') || params.get('to') || '';
+    if (guestName) {
+      document.getElementById('guestName').textContent = decodeURIComponent(guestName.replace(/\+/g, ' '));
+    }
+
+    let invitation = null;
+
+    async function loadInvitation() {
+      if (!username) {
+        document.getElementById('coupleNames').textContent = 'Undangan tidak ditemukan';
+        return;
+      }
+      const res = await API.getInvitation(username);
+      if (!res.success) {
+        document.getElementById('coupleNames').textContent = 'Undangan tidak ditemukan';
+        document.getElementById('btnOpen').style.display = 'none';
+        return;
+      }
+      invitation = res.invitation;
+      renderInvitation(invitation);
+    }
+
+    function renderInvitation(inv) {
+      const groom = inv.groom || 'Mempelai Pria';
+      const bride = inv.bride || 'Mempelai Wanita';
+      document.getElementById('coupleNames').textContent = groom + ' & ' + bride;
+      document.getElementById('groomName').textContent = groom;
+      document.getElementById('brideName').textContent = bride;
+      document.title = groom + ' & ' + bride + ' — Undangan Pernikahan';
+
+      if (inv.wedding_date) {
+        const d = new Date(inv.wedding_date + 'T00:00:00');
+        const opts = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        const dateStr = d.toLocaleDateString('id-ID', opts);
+        document.getElementById('coverDate').textContent = dateStr;
+        document.getElementById('eventDate').textContent = dateStr;
+        startCountdown(d);
+      }
+      if (inv.wedding_time) document.getElementById('eventTime').textContent = inv.wedding_time;
+      if (inv.location) document.getElementById('eventLocation').textContent = inv.location;
+      if (inv.maps_url) {
+        const a = document.getElementById('mapsLink');
+        a.href = inv.maps_url;
+        a.style.display = 'inline-block';
+      }
+      if (inv.streaming_url) {
+        document.getElementById('streamingBox').classList.remove('hidden');
+        document.getElementById('streamingLink').href = inv.streaming_url;
+      }
+
+      // Cover image
+      if (inv.cover_image) {
+        document.getElementById('cover').style.backgroundImage =
+          `linear-gradient(rgba(0,0,0,.45), rgba(0,0,0,.55)), url('${inv.cover_image}')`;
+      }
+
+      // Music
+      if (inv.music_url) {
+        const audio = document.getElementById('bgMusic');
+        audio.src = inv.music_url;
+        document.getElementById('musicBtn').classList.remove('hidden');
+      }
+
+      // Story
+      let story = inv.story;
+      if (typeof story === 'string') try { story = JSON.parse(story); } catch(e) { story = []; }
+      if (Array.isArray(story) && story.length) {
+        document.getElementById('storySection').classList.remove('hidden');
+        document.getElementById('storyList').innerHTML = story.map(s => `
+          <div class="story-item">
+            <div class="date">${s.date || ''}</div>
+            <h3 style="font-size:1.2rem;margin:4px 0;">${s.title || ''}</h3>
+            <p>${s.text || ''}</p>
+          </div>`).join('');
+      }
+
+      // Gallery
+      let gallery = inv.gallery;
+      if (typeof gallery === 'string') try { gallery = JSON.parse(gallery); } catch(e) { gallery = []; }
+      if (Array.isArray(gallery) && gallery.length) {
+        document.getElementById('gallerySection').classList.remove('hidden');
+        document.getElementById('galleryList').innerHTML = gallery.map(url =>
+          `<img src="${url}" alt="Gallery" loading="lazy">`).join('');
+      }
+
+      // Rekening
+      let rek = inv.rekening;
+      if (typeof rek === 'string') try { rek = JSON.parse(rek); } catch(e) { rek = []; }
+      if (Array.isArray(rek) && rek.length) {
+        document.getElementById('rekeningSection').classList.remove('hidden');
+        document.getElementById('rekeningList').innerHTML = rek.map(r => `
+          <div class="rekening-item">
+            <strong>${r.bank || 'Transfer'}</strong><br>
+            ${r.number || ''}<br>
+            a.n. ${r.name || ''}
+          </div>`).join('');
+      }
+
+      // Pre-fill RSVP name if guest known
+      if (guestName) {
+        document.getElementById('rsvpName').value = decodeURIComponent(guestName.replace(/\+/g, ' '));
+      }
+    }
+
+    function startCountdown(targetDate) {
+      function tick() {
+        const now = new Date();
+        const diff = targetDate - now;
+        if (diff <= 0) {
+          document.getElementById('cd-d').textContent = 0;
+          document.getElementById('cd-h').textContent = 0;
+          document.getElementById('cd-m').textContent = 0;
+          document.getElementById('cd-s').textContent = 0;
+          return;
+        }
+        const d = Math.floor(diff / 86400000);
+        const h = Math.floor((diff % 86400000) / 3600000);
+        const m = Math.floor((diff % 3600000) / 60000);
+        const s = Math.floor((diff % 60000) / 1000);
+        document.getElementById('cd-d').textContent = d;
+        document.getElementById('cd-h').textContent = h;
+        document.getElementById('cd-m').textContent = m;
+        document.getElementById('cd-s').textContent = s;
+      }
+      tick();
+      setInterval(tick, 1000);
+    }
+
+    // Open invitation
+    document.getElementById('btnOpen').addEventListener('click', () => {
+      document.getElementById('cover').style.display = 'none';
+      document.getElementById('mainContent').classList.add('show');
+      const audio = document.getElementById('bgMusic');
+      if (audio.src) {
+        audio.play().catch(() => {});
+      }
+    });
+
+    // Music toggle
+    let playing = false;
+    document.getElementById('musicBtn').addEventListener('click', () => {
+      const audio = document.getElementById('bgMusic');
+      if (playing) { audio.pause(); playing = false; }
+      else { audio.play(); playing = true; }
+    });
+
+    // RSVP
+    document.getElementById('rsvpForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const result = document.getElementById('rsvpResult');
+      result.className = 'rsvp-msg';
+      result.textContent = 'Mengirim...';
+      result.style.display = 'block';
+
+      const res = await API.submitRSVP({
+        username,
+        guest_name: document.getElementById('rsvpName').value,
+        attendance: document.getElementById('rsvpAttend').value,
+        message: document.getElementById('rsvpMsg').value
+      });
+
+      result.className = res.success ? 'rsvp-msg ok' : 'rsvp-msg err';
+      result.textContent = res.success ? (res.message || 'Terima kasih!') : (res.error || 'Gagal mengirim');
+      if (res.success) document.getElementById('rsvpForm').reset();
+    });
+
+    loadInvitation();
+  </script>
+</body>
+</html>

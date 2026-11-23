@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin Panel — Nikah</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; background: #f5f5f5; margin: 0; color: #222; }
+    .login-wrap { min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+    .box { background: #fff; padding: 36px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,.08); width: 100%; max-width: 360px; }
+    h1 { margin: 0 0 20px; font-size: 1.4rem; }
+    input, select { width: 100%; padding: 10px 12px; border: 1px solid #ddd; border-radius: 6px; margin-bottom: 12px; box-sizing: border-box; }
+    button { padding: 10px 18px; background: #8b5a2b; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; }
+    button.secondary { background: #555; }
+    button.danger { background: #c0392b; }
+    .error { color: #c00; font-size: 0.9rem; margin-bottom: 10px; }
+    header { background: #2c2c2c; color: #fff; padding: 14px 24px; display: flex; justify-content: space-between; align-items: center; }
+    header h1 { margin: 0; font-size: 1.1rem; }
+    .container { max-width: 1000px; margin: 24px auto; padding: 0 16px; }
+    table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,.05); }
+    th, td { padding: 12px 14px; text-align: left; border-bottom: 1px solid #eee; font-size: 0.95rem; }
+    th { background: #f8f8f8; font-weight: 600; }
+    .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; }
+    .badge.active { background: #d4edda; color: #155724; }
+    .badge.inactive { background: #f8d7da; color: #721c24; }
+    .form-card { background: #fff; padding: 24px; border-radius: 8px; margin-bottom: 24px; box-shadow: 0 2px 8px rgba(0,0,0,.05); }
+    .form-card h2 { margin: 0 0 16px; font-size: 1.1rem; }
+    .row { display: flex; gap: 12px; flex-wrap: wrap; }
+    .row > * { flex: 1; min-width: 140px; }
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+  <!-- LOGIN ADMIN -->
+  <div id="loginView" class="login-wrap">
+    <div class="box">
+      <h1>Admin Login</h1>
+      <div class="error" id="loginError"></div>
+      <input type="password" id="adminPass" placeholder="Password admin" />
+      <button onclick="doAdminLogin()" style="width:100%">Masuk</button>
+    </div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div id="dashView" class="hidden">
+    <header>
+      <h1>Admin — Nikah SaaS</h1>
+      <div>
+        <button class="secondary" onclick="Auth.adminLogout(); location.reload()">Logout</button>
+      </div>
+    </header>
+    <div class="container">
+      <div class="form-card">
+        <h2>Buat Pelanggan Baru</h2>
+        <div class="row">
+          <div>
+            <label>Username</label>
+            <input type="text" id="newUser" placeholder="tantri">
+          </div>
+          <div>
+            <label>Password</label>
+            <input type="text" id="newPass" placeholder="password">
+          </div>
+          <div>
+            <label>Paket</label>
+            <select id="newPkg">
+              <option value="basic">Basic</option>
+              <option value="standard" selected>Standard</option>
+              <option value="premium">Premium</option>
+            </select>
+          </div>
+          <div>
+            <label>Status</label>
+            <select id="newStatus">
+              <option value="active" selected>Active</option>
+              <option value="inactive">Inactive</option>
+            </select>
+          </div>
+        </div>
+        <button onclick="createUser()" style="margin-top:8px">Buat Akun</button>
+        <span id="createMsg" style="margin-left:12px;font-size:0.9rem;"></span>
+      </div>
+
+      <h2 style="margin-bottom:12px;">Daftar Pelanggan</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Username</th>
+            <th>Paket</th>
+            <th>Status</th>
+            <th>Dibuat</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody id="userTable"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <script src="/js/config.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/auth.js"></script>
+  <script>
+    function showDash() {
+      document.getElementById('loginView').classList.add('hidden');
+      document.getElementById('dashView').classList.remove('hidden');
+      loadUsers();
+    }
+
+    if (Auth.isAdmin()) showDash();
+
+    async function doAdminLogin() {
+      const pass = document.getElementById('adminPass').value;
+      const res = await API.adminLogin(pass);
+      if (res.success) {
+        Auth.saveAdminToken(res.token);
+        showDash();
+      } else {
+        document.getElementById('loginError').textContent = res.error || 'Gagal';
+      }
+    }
+
+    async function loadUsers() {
+      const res = await API.listUsers(Auth.getAdminToken());
+      const tbody = document.getElementById('userTable');
+      tbody.innerHTML = '';
+      if (!res.success) {
+        tbody.innerHTML = '<tr><td colspan="5">' + (res.error || 'Gagal load') + '</td></tr>';
+        return;
+      }
+      (res.users || []).forEach(u => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><strong>${u.username}</strong><br><small><a href="/${u.username}" target="_blank">/ ${u.username}</a></small></td>
+          <td>${u.package || '-'}</td>
+          <td><span class="badge ${u.status === 'active' ? 'active' : 'inactive'}">${u.status}</span></td>
+          <td>${u.created_at ? u.created_at.substring(0,10) : '-'}</td>
+          <td>
+            <button class="secondary" style="padding:4px 10px;font-size:0.8rem" onclick="toggleStatus('${u.username}','${u.status}')">
+              ${u.status === 'active' ? 'Nonaktifkan' : 'Aktifkan'}
+            </button>
+            <button class="danger" style="padding:4px 10px;font-size:0.8rem;margin-left:4px" onclick="delUser('${u.username}')">Hapus</button>
+          </td>`;
+        tbody.appendChild(tr);
+      });
+    }
+
+    async function createUser() {
+      const data = {
+        username: document.getElementById('newUser').value.trim().toLowerCase(),
+        password: document.getElementById('newPass').value,
+        package: document.getElementById('newPkg').value,
+        status: document.getElementById('newStatus').value
+      };
+      const msg = document.getElementById('createMsg');
+      msg.textContent = 'Menyimpan...';
+      const res = await API.createUser(Auth.getAdminToken(), data);
+      msg.textContent = res.success ? '✓ Berhasil dibuat' : (res.error || 'Gagal');
+      msg.style.color = res.success ? 'green' : 'red';
+      if (res.success) {
+        document.getElementById('newUser').value = '';
+        document.getElementById('newPass').value = '';
+        loadUsers();
+      }
+    }
+
+    async function toggleStatus(username, current) {
+      const newStatus = current === 'active' ? 'inactive' : 'active';
+      await API.updateUser(Auth.getAdminToken(), { username, status: newStatus });
+      loadUsers();
+    }
+
+    async function delUser(username) {
+      if (!confirm('Hapus user ' + username + '?')) return;
+      await API.deleteUser(Auth.getAdminToken(), username);
+      loadUsers();
+    }
+  </script>
+</body>
+</html>

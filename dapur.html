@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dapur Undangan — Nikah</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; background: #f5f5f5; margin: 0; color: #222; }
+    header { background: #8b5a2b; color: #fff; padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+    header h1 { margin: 0; font-size: 1.15rem; }
+    header a { color: #fff; margin-left: 12px; font-size: 0.9rem; }
+    .container { max-width: 800px; margin: 24px auto; padding: 0 16px; }
+    .card { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,.05); }
+    .card h2 { margin: 0 0 16px; font-size: 1.15rem; color: #8b5a2b; }
+    label { display: block; font-weight: 500; margin: 12px 0 4px; font-size: 0.9rem; }
+    input, textarea, select { width: 100%; padding: 10px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 0.95rem; box-sizing: border-box; }
+    textarea { min-height: 80px; resize: vertical; }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 600px) { .row { grid-template-columns: 1fr; } }
+    button { padding: 12px 24px; background: #8b5a2b; color: #fff; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 16px; }
+    button:hover { background: #6b4423; }
+    .msg { padding: 10px; border-radius: 6px; margin-top: 12px; display: none; }
+    .msg.ok { background: #d4edda; color: #155724; display: block; }
+    .msg.err { background: #f8d7da; color: #721c24; display: block; }
+    .link-box { background: #f8f4ef; padding: 12px; border-radius: 8px; font-family: monospace; word-break: break-all; margin-top: 8px; }
+    .rsvp-item { border-bottom: 1px solid #eee; padding: 10px 0; }
+    .rsvp-item:last-child { border-bottom: none; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Dapur Undangan — <span id="uname"></span></h1>
+    <div>
+      <a id="previewLink" href="#" target="_blank">Lihat Undangan</a>
+      <a href="#" onclick="Auth.logout(); location.href='/login.html'">Logout</a>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="card">
+      <h2>Link Undangan Anda</h2>
+      <div class="link-box" id="invLink"></div>
+      <p style="font-size:0.9rem;color:#666;margin-top:8px;">Tambahkan <code>?kpd=Nama+Tamu</code> di akhir link untuk menyambut tamu dengan nama.</p>
+    </div>
+
+    <div class="card">
+      <h2>Data Mempelai & Acara</h2>
+      <div class="row">
+        <div>
+          <label>Nama Mempelai Pria</label>
+          <input type="text" id="groom" placeholder="Joefrey">
+        </div>
+        <div>
+          <label>Nama Mempelai Wanita</label>
+          <input type="text" id="bride" placeholder="Sheila">
+        </div>
+      </div>
+      <div class="row">
+        <div>
+          <label>Tanggal Acara</label>
+          <input type="date" id="wedding_date">
+        </div>
+        <div>
+          <label>Waktu</label>
+          <input type="text" id="wedding_time" placeholder="10:00 WIB">
+        </div>
+      </div>
+      <label>Lokasi / Alamat</label>
+      <input type="text" id="location" placeholder="Gedung Serbaguna, Jakarta">
+      <label>Link Google Maps</label>
+      <input type="url" id="maps_url" placeholder="https://maps.google.com/...">
+      <label>URL Cover Image</label>
+      <input type="url" id="cover_image" placeholder="https://...">
+      <label>URL Musik (mp3)</label>
+      <input type="url" id="music_url" placeholder="https://...">
+      <label>Link Live Streaming (opsional)</label>
+      <input type="url" id="streaming_url" placeholder="https://youtube.com/...">
+      <label>Tema</label>
+      <select id="theme">
+        <option value="classic">Classic</option>
+        <option value="elegant">Elegant</option>
+        <option value="modern">Modern</option>
+        <option value="floral">Floral</option>
+      </select>
+    </div>
+
+    <div class="card">
+      <h2>Love Story (JSON array)</h2>
+      <p style="font-size:0.85rem;color:#666;">Format: [{"title":"First Meet","date":"2023-01-01","text":"..."}, ...]</p>
+      <textarea id="story" placeholder='[{"title":"First Meet","date":"Desember 2023","text":"Kami bertemu..."}]'></textarea>
+    </div>
+
+    <div class="card">
+      <h2>Gallery (JSON array URL)</h2>
+      <textarea id="gallery" placeholder='["https://img1.jpg","https://img2.jpg"]'></textarea>
+    </div>
+
+    <div class="card">
+      <h2>Rekening / E-Wallet (JSON)</h2>
+      <textarea id="rekening" placeholder='[{"bank":"BCA","number":"123456","name":"Joefrey"},{"bank":"Dana","number":"0812...","name":"Sheila"}]'></textarea>
+    </div>
+
+    <button onclick="saveAll()">Simpan Semua Perubahan</button>
+    <div class="msg" id="msg"></div>
+
+    <div class="card" style="margin-top:28px;">
+      <h2>Daftar RSVP / Ucapan</h2>
+      <div id="rsvpList">Memuat...</div>
+    </div>
+  </div>
+
+  <script src="/js/config.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/auth.js"></script>
+  <script>
+    // Ambil username dari path: /tantri/dapur atau fallback dari session
+    function getUsernameFromPath() {
+      const parts = location.pathname.replace(/\/+$/, '').split('/').filter(Boolean);
+      // expected: ["tantri", "dapur"] or just session
+      if (parts.length >= 1 && parts[parts.length - 1] === 'dapur') {
+        return parts[parts.length - 2] || null;
+      }
+      return null;
+    }
+
+    let currentUser = Auth.getUser();
+    const pathUser = getUsernameFromPath();
+
+    if (!Auth.isLoggedIn()) {
+      location.href = '/login.html';
+    } else if (pathUser && pathUser !== currentUser.username) {
+      alert('Anda login sebagai ' + currentUser.username);
+      location.href = '/' + currentUser.username + '/dapur';
+    }
+
+    const username = currentUser.username;
+    document.getElementById('uname').textContent = username;
+    document.getElementById('previewLink').href = '/' + username;
+    document.getElementById('invLink').textContent = CONFIG.BASE_URL + '/' + username;
+
+    async function loadData() {
+      const res = await API.getInvitation(username);
+      if (!res.success) {
+        document.getElementById('msg').className = 'msg err';
+        document.getElementById('msg').textContent = res.error || 'Gagal memuat data';
+        return;
+      }
+      const inv = res.invitation || {};
+      document.getElementById('groom').value = inv.groom || '';
+      document.getElementById('bride').value = inv.bride || '';
+      document.getElementById('wedding_date').value = inv.wedding_date || '';
+      document.getElementById('wedding_time').value = inv.wedding_time || '';
+      document.getElementById('location').value = inv.location || '';
+      document.getElementById('maps_url').value = inv.maps_url || '';
+      document.getElementById('cover_image').value = inv.cover_image || '';
+      document.getElementById('music_url').value = inv.music_url || '';
+      document.getElementById('streaming_url').value = inv.streaming_url || '';
+      document.getElementById('theme').value = inv.theme || 'classic';
+
+      // JSON fields
+      document.getElementById('story').value = typeof inv.story === 'object' ? JSON.stringify(inv.story, null, 2) : (inv.story || '[]');
+      document.getElementById('gallery').value = typeof inv.gallery === 'object' ? JSON.stringify(inv.gallery, null, 2) : (inv.gallery || '[]');
+      document.getElementById('rekening').value = typeof inv.rekening === 'object' ? JSON.stringify(inv.rekening, null, 2) : (inv.rekening || '[]');
+
+      // RSVP
+      const rsvpRes = await API.getRSVPs(Auth.getToken(), username);
+      const list = document.getElementById('rsvpList');
+      if (rsvpRes.success && rsvpRes.rsvps && rsvpRes.rsvps.length) {
+        list.innerHTML = rsvpRes.rsvps.map(r => `
+          <div class="rsvp-item">
+            <strong>${r.guest_name}</strong> — ${r.attendance || '-'}
+            <br><small>${r.message || ''}</small>
+            <br><small style="color:#999">${r.created_at || ''}</small>
+          </div>`).join('');
+      } else {
+        list.innerHTML = '<p style="color:#888">Belum ada RSVP</p>';
+      }
+    }
+
+    async function saveAll() {
+      const msg = document.getElementById('msg');
+      msg.className = 'msg';
+      msg.textContent = 'Menyimpan...';
+      msg.style.display = 'block';
+
+      let story, gallery, rekening;
+      try {
+        story = JSON.parse(document.getElementById('story').value || '[]');
+        gallery = JSON.parse(document.getElementById('gallery').value || '[]');
+        rekening = JSON.parse(document.getElementById('rekening').value || '[]');
+      } catch (e) {
+        msg.className = 'msg err';
+        msg.textContent = 'Format JSON salah di Story / Gallery / Rekening';
+        return;
+      }
+
+      const data = {
+        username,
+        token: Auth.getToken(),
+        groom: document.getElementById('groom').value,
+        bride: document.getElementById('bride').value,
+        wedding_date: document.getElementById('wedding_date').value,
+        wedding_time: document.getElementById('wedding_time').value,
+        location: document.getElementById('location').value,
+        maps_url: document.getElementById('maps_url').value,
+        cover_image: document.getElementById('cover_image').value,
+        music_url: document.getElementById('music_url').value,
+        streaming_url: document.getElementById('streaming_url').value,
+        theme: document.getElementById('theme').value,
+        story,
+        gallery,
+        rekening
+      };
+
+      const res = await API.saveInvitation(Auth.getToken(), data);
+      msg.className = res.success ? 'msg ok' : 'msg err';
+      msg.textContent = res.success ? '✓ Berhasil disimpan' : (res.error || 'Gagal menyimpan');
+    }
+
+    loadData();
+  </script>
+</body>
+</html>
